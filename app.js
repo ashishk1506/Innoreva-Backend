@@ -1,138 +1,70 @@
 var express = require('express');
-
 var bodyParser = require('body-parser')
-
-
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 const mysql = require('mysql');
-
-//create connection
-
+var app = express();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const PORT = process.env.PORT || 4000
 
 const db = mysql.createConnection({
     host : 'localhost',
     user : 'root',
     password : '',
-    database: 'nodemysql'
-});
+    database: 'translate'
+})
 
 //connect
-
 db.connect((err) => {
     if(err) {
         throw err;
     }
     console.log('Mysql connected');
-});
+})
 
-var app = express();
+app.get('/', function(req,res) {
+    var text;
+    var text_split;
+    text = req.body.Name;
+    // text = "अफसर अफसरों दर्पण"
+    text_split = text.split(" "); //splits the text into array
+    var text_length  
+    text_length = Object.keys(text_split).length; // length of array
 
-//create database
-app.get('/createdb', (req, res) => {
-    let sql = 'CREATE DATABASE nodemysql';
-    db.query(sql, (err, result) => {
-        console.log(result);
-        res.send('database created...');
-    });
-});
-
-//create table
-app.get('/createpoststable', (req,res) => {
-    let sql = 'CREATE TABLE posts (urdu VARCHAR(255), hindi VARCHAR(255), PRIMARY KEY(urdu))';
-    db.query(sql, (err,result) => {
-        if(err) throw err;
-        console.log(result);
-        res.send('Post table created..');
-    });
-});
-
-
-app.set('view engine', 'ejs'); //setting view engine
-
-app.get('/', function(req,res)  {
-    res.render('index');
-});
-
-app.get('/contact', function(req,res){
-    res.render('contact');
-});
-
-app.post('/contact', urlencodedParser, function(req,res) {
-    var str;
-    var str3,str4;
-    str = req.body.Name;
-    str3 = str.split(" ");
-    console.log(str3);
-    var length2;
-    length2 = Object.keys(str3).length;
-    db.query("SELECT * FROM posts", function (err,result,fields)
+    db.query("SELECT * FROM urdu_to_hindi", function (err,result)
     {
-       
         if(err)
-        throw err;
-        var test = result;
-        var length = Object.keys(test).length;
-        for(var i=0 ;i < length; i++)
+        throw err
+
+        var length_table = Object.keys(result).length
+        var newstr = '';   //to store new string
+        var oldstr = '';  //to store old string
+        for(var j=0; j < text_length; j++)
         {
-            console.log(result[i]);
-        }
-        var newstr = "";
-        var newstr2 = "";
-        for(var j=0; j < length2; j++)
-        {
-            datas = str3[j];
-            var check = 0;
-            newstr2 =newstr2 + " " + datas;
-            for(var i=0 ; i < length; i++)
+            datas = text_split[j]
+            oldstr = oldstr + " " + datas  //pushing old text
+            var check = 0
+            for(var i=0 ; i < length_table; i++)
             {
-                //console.log(result[i].urdu,datas);
-                if(result[i].urdu === datas)
+                if(result[i].Urdu === datas)   //if found in databse add translated word to newstr
                 {
-                   // console.log(result[i].urdu);
-                   // console.log(result[i].hindi);
-                    newstr =newstr + " " + result[i].hindi;
-                    check=1;
-                    break;
+                    newstr = newstr + " " + result[i].Hindi
+                    check = 1
+                    break
                 }
             }
-            if(check === 0)
+            if(check == 0)  //if not found add the old word to newstr
             {
-                newstr =newstr + " " + datas;
-            }
+                newstr = newstr + " " + datas
+            }       
         }
-        console.log(newstr);
-        console.log(newstr2);
-
-        res.render('contact',{datas: {Converted : newstr, old: newstr2}}); //sending converted urdu to hindi sentence and urdu sentences
-    });
-    
-});
-
-
-
-    /*str3.map(async(ele) => {
-        console.log(ele);
-        let sql1 = 'select *from posts where urdu = ?';
-        let val = ele;
-        let cd =  await db.query(sql1, [val], function (err,rows,fields) {
-            console.log(rows[1]);
-            if(err)
-            throw err;
-            res.send('checked');
-        });
-    });*/
-
-/*app.get('/addposts', (req,res) => {
-    let post = {urdu: 'NIT ', hindi: '4'};
-    let sql = 'INSERT INTO posts SET urdu = ?';
-    let query = db.query(sql, post, (err,result) => {
-        console.log(result);
-        res.send('post 1 added');
-    });
-});*/
+         res.send({
+             'old':oldstr,
+             'new':newstr
+         })
+        // res.render('contact',{datas: {Converted : newstr, old: newstr2}}); //sending converted urdu to hindi sentence and urdu sentences
+    })
+})
  
 //setting server
-app.listen('4000', () => {
-    console.log('listening to port 4000');
-});
+app.listen(PORT, () => {
+    console.log(`listening to port ${PORT}`);
+})

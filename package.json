@@ -1,0 +1,20 @@
+{
+  "name": "innoreva-backend",
+  "version": "1.0.0",
+  "description": "This repo is for the backend codes.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpshikha476/Innoreva-Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpshikha476/Innoreva-Backend/issues"
+  },
+  "homepage": "https://github.com/dpshikha476/Innoreva-Backend#readme"
+}
