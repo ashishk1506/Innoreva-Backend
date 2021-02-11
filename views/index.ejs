@@ -8,6 +8,7 @@
     <div class="upper-container">Hindi to Urdu Convertor</div>
     <div class="middle-container">
       <div class="container">
+        <form action="/" method="post">
 
         <div class="mb-3 row">
           <div class="col-sm-7">
@@ -25,16 +26,16 @@
           </div>
 
           <div class="col">
-            <p class="form-control" > <%= Converted %></p>
+            <p class="form-control"> <%= Converted %></p>
             <!-- <input class="form-control " id="Textarea2" type="text" aria-label="default input"> -->
           </div>
         </div>
       </div>
       <div class="d-grid gap-2 col-6 ">
-  <button class="btn btn-primary" type="button">Convert</button>
-  <button class="btn btn-primary" type="button">Revert</button>
+  <button class="btn btn-primary" type="submit">Convert</button>
+  <button class="btn btn-primary" type="submit">Revert</button>
 </div>
-
+</form>
 
 </body>
 
