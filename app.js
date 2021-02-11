@@ -1,8 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser')
 const mysql = require('mysql');
+const ejs = require("ejs");
 var app = express();
+app.set('view engine', 'ejs');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(express.static("public"));
 const PORT = process.env.PORT || 4000
 
 const db = mysql.createConnection({
@@ -56,15 +59,19 @@ app.get('/', function(req,res) {
                 newstr = newstr + " " + datas
             }       
         }
-         res.send({
-             'old':oldstr,
-             'new':newstr
-         })
-        // res.render('contact',{datas: {Converted : newstr, old: newstr2}}); //sending converted urdu to hindi sentence and urdu sentences
+        //  res.send({
+        //      'old':oldstr,
+        //      'new':newstr
+        //  })
+         res.render('index',{datas: {Converted : newstr, old: newstr2}}); //sending converted urdu to hindi sentence and urdu sentences
     })
 })
  
-//setting server
+// setting server
 app.listen(PORT, () => {
     console.log(`listening to port ${PORT}`);
 })
+
+app.listen(3000,function(){
+    console.log("server running!");
+});
