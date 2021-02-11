@@ -1,0 +1,44 @@
+<%- include("header") -%>
+  <div class="main-body">
+    <img src="images\bg-pattern-top.svg" alt="circular-pattern-top" class="circular-pattern-top">
+    <img src="images\bg-pattern-bottom.svg" alt="circular-pattern-bottom" class="circular-pattern-bottom">
+
+    <div class="upper-container">Hindi to Urdu Convertor</div>
+    <div class="middle-container">
+
+      <div class="container">
+        <div class="mb-3 row">
+              <div class="col-sm-7">
+              <form method="POST" >
+                <label  class="form-label bold" >Enter your word</label>
+              </div>
+              <div class="col">
+                <input class="form-control " type="text" name="word">
+              </div>
+              <button class="btn btn-primary" type="submit" formaction="/convert">Convert</button>
+              <br>
+              <button class="btn btn-primary" formaction="/revert">revert</button>
+        </div>
+        <div class="mb-3 row">
+            <div class="col">
+              <label for="Textarea2" class="form-label bold"><span >Alternative</span></label>
+            </div>
+            <div class="col">
+              <div class="form-control" id="text"> 
+                <%= text_new %>
+                <%= text_old %>
+              </div>
+              <!-- <input class="form-control " id="Textarea2" type="text" aria-label="default input"> -->
+            </div>
+        </div>
+      </div>
+      <div class="d-grid gap-2 col-6 ">
+      </form>
+</div>
+</body>
+<script>
+  function revert(){
+  alert(document.getElementById('text').value )
+  }
+</script>
+</html>
