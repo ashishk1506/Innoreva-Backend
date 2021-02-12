@@ -4,7 +4,7 @@ const mysql = require('mysql');
 var app = express();
 
 app.set('view engine', 'ejs');
-app.use(express.static("public"));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}))
 
 const PORT = process.env.PORT || 4000
@@ -25,7 +25,7 @@ db.connect((err) => {
 })
 
 app.get('/',function(req,res){
-    res.render('index',{text_old:"" ,text_new:""})
+    res.render('index',{text_new:[]})
 })
 
 app.post('/convert', function(req,res) {
@@ -33,7 +33,6 @@ app.post('/convert', function(req,res) {
     var text;
     var text_split;
     text = req.body.word;
-    
     // text = "अफसर अफसरों दर्पण"
     text_split = text.split(" "); //splits the text into array
     var text_length  
@@ -44,7 +43,8 @@ app.post('/convert', function(req,res) {
         if(err)
         throw err
         var length_table = Object.keys(result).length
-        var newstr = '';   //to store new string
+        var newstr = []; 
+          //to store new string
         for(var j=0; j < text_length; j++)
         {
             datas = text_split[j]
@@ -53,26 +53,69 @@ app.post('/convert', function(req,res) {
             {
                 if(result[i].Urdu === datas)   //if found in databse add translated word to newstr
                 {
-                    newstr = newstr + " " + result[i].Hindi
+                    var newarr = result[i].Hindi.split('/')
+                    newstr.push({
+                        hindi : newarr,
+                        urdu : result[i].Urdu,
+                        status : 1
+                    })
+                   
                     check = 1
                     break
                 }
             }
             if(check == 0)  //if not found add the old word to newstr
             {
-                newstr = newstr + " " + datas
+               var newdata = []
+               newdata.push(datas)
+               newstr.push({
+                   hindi : newdata,
+                   urdu : " ",
+                   status: 0
+               })
             }       
         }
-         res.render('index',{text_new:newstr,text_old:""})
+        console.log(newstr)
+         res.render('index',{text_new:newstr})
     })
  
 })
 
-app.post('/revert',function(req,res){
-    var text
-    text = req.body.word
-    console.log(text)
-    res.render('index',{text_old:text,text_new:""})
+app.get('/user_controller',(req,res)=>{
+    res.render('user_controller')
+})
+
+app.post('/add',function(req,res){
+    let addUrdu = req.body.addUrdu
+    let addHindi = req.body.addHindi
+    db.query('INSERT INTO urdutohindi (Urdu,Hindi) VALUES (?,?)',[addUrdu,addHindi],(err,result)=>{
+        if(err)
+        console.log(err)
+        else
+        res.render('user_controller')
+    })
+})
+
+app.post('/updateUrdu',function(req,res){
+    let updateUrdu = req.body.updateUrdu
+    let Hindi = req.body.Hindi
+    db.query('UPDATE urdutohindi SET Urdu = ? WHERE Hindi = ?',[updateUrdu,Hindi],(err,result)=>{
+        if(err)
+        console.log(err)
+        else
+        res.render('user_controller')
+    })
+})
+
+app.post('/updateHindi',function(req,res){
+    let Urdu = req.body.Urdu
+    let updateHindi = req.body.updateHindi
+    db.query('UPDATE urdutohindi SET Urdu = ? WHERE Hindi = ?',[Urdu,updateHindi],(err,result)=>{
+        if(err)
+        console.log(err)
+        else
+        res.render('user_controller')
+    })
 })
  
 // setting server
