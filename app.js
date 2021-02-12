@@ -8,13 +8,18 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}))
 
 const PORT = process.env.PORT || 4000
-
 const db = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database: 'translate'
+    localhost : 'b65k2v5eq5hpygsbmyhm-mysql.services.clever-cloud.com',
+    user : 'u1hql9occut1cyai',
+    password : 'kqeSj0Rc7xBCDdo7L5FL',
+    database: 'b65k2v5eq5hpygsbmyhm'
 })
+// const db = mysql.createConnection({
+//     host : 'localhost',
+//     user : 'root',
+//     password : '',
+//     database: 'translate'
+// })
 
 //connect
 db.connect((err) => {
