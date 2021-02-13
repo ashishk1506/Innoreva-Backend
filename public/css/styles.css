@@ -141,11 +141,11 @@ textarea::-webkit-input-placeholder {
    position: absolute;
    background-color:  hsl(185, 75%, 39%);
    color: white;
-   padding: 5px 15px 5px 15px;
    border-radius: 5px;
    display: none;
    cursor: pointer;
 }
+
 
 .drop:hover .drop_menu{
    display: block;
