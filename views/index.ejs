@@ -43,8 +43,7 @@
                       </span>
                      <div class="drop_menu">
                       <% array.hindi.map((arr)=>{%>
-                        <p onclick="changeHandler(event,'<%=index%>')">
-                                <%= array.urdu %>-<%= arr %></p>
+                        <p  onclick="changeHandler(event,'<%=index%>')"><span><%= arr %></span> </p>
                        <%})%>
                      </div>
                      </span>
@@ -70,11 +69,7 @@
     <i class="fa fa-database" aria-hidden="true"><a href="/user_controller" style="text-decoration: none; color : white;font-size: 1.2rem; padding: 20px;" >Manage Dictionary</a>
     </div></i>
 </body>
-<script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-</script>
+
 <script>
   var data
   function changeHandler(e,i) {
