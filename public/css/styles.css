@@ -46,8 +46,8 @@ background-color: white;
 position: absolute;
 top: 50%; 
 left:50%;
-height: 70%;
-width: 70%; 
+height: 90%;
+width: 80%; 
 transform: translate(-50%,-50%);
 border-radius: 1em;
 box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2),0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -85,14 +85,19 @@ textarea[type=text] {
   padding: 12px 12px;
   margin-bottom: 8px;
   box-sizing: border-box;
-  height: 100px;
-  font-size: 20px;
+  height: 200px;
+  font-size: 1rem;
 }
 
 textarea::-webkit-input-placeholder {
-    font-size: 1rem;
+    font-size: 2rem;
     /* line-height: 3; */
     color: hsl(0, 0%, 75%);
+}
+
+.set-font{
+  font-size: 1.0rem; 
+  word-spacing: 4px;
 }
 
 @media (max-width:991px) {
@@ -114,7 +119,7 @@ textarea::-webkit-input-placeholder {
     font-size: 2rem;
   }
   textarea[type=text]{
-    height: 90px;
+    height: 190px;
   }
   textarea::-webkit-input-placeholder {
     font-size: 1.8rem;
@@ -135,8 +140,8 @@ textarea::-webkit-input-placeholder {
    text-decoration: underline;
    text-decoration-color: red;
    text-decoration-thickness: 2px;
-
 }
+
 .drop_menu{
    position: absolute;
    background-color:  hsl(185, 75%, 39%);
@@ -151,15 +156,24 @@ textarea::-webkit-input-placeholder {
    display: block;
 }
 
+li {
+  display: inline;
+  list-style: none;
+}
+
 @media (max-width:576px){
   .card-header{
     font-size:1.6rem;
   }
   textarea[type=text]{
-    height: 70px;
+    height: 170px;
+    font-size: 0.8rem;
   }
   textarea::-webkit-input-placeholder {
     font-size: 1.4rem;
+  }
+  .set-font{
+    font-size: 0.8rem; 
   }
   .bold{
     font-size: 16px;
@@ -174,7 +188,7 @@ textarea::-webkit-input-placeholder {
 
 @media only screen and (max-width: 360px){
   textarea[type=text]{
-    height: 65px;
+    height: 165px;
   }
   .bold{
     font-size: 15px;

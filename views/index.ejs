@@ -27,11 +27,11 @@
         <div class="mb-3 row">
           <div class="col-sm-6">
             <label for="Textarea1" class="form-label bold">Urdu</label>
-            <textarea id="word" onchange="getValue()" data-gramm_editor="false" class="form-control"  type="text" placeholder="Enter text"  rows="2" name='word'></textarea>
+            <textarea id="word" onchange="getValue()" data-gramm_editor="false" class="form-control"  type="text" placeholder="Enter text"  rows="4" name='word'></textarea>
           </div>
           <div class="col-sm-6">
             <label for="Textarea2" class="form-label bold">Hindi</label>
-              <div style="font-size: 1.1rem; word-spacing: 4px;">
+              <div class="set-font">
               
                 <% text_new.map((array,index)=>{ %>
                   <% if(array.status == 0){ %>
@@ -43,7 +43,7 @@
                       </span>
                      <div class="drop_menu">
                       <% array.hindi.map((arr)=>{%>
-                        <p  onclick="changeHandler(event,'<%=index%>')"><span><%= arr %></span> </p>
+                        <span onclick="changeHandler(event,'<%=index%>')"> <li><%= arr %></li> </span>
                        <%})%>
                      </div>
                      </span>
@@ -63,11 +63,11 @@
         </div>
       </div>
     </div>
+    <div style="position: absolute; bottom: 0; right: 0; margin: 20px;">
+      <a href="/user_controller" style="text-decoration: none; color : hsl(185, 75%, 39%);font-size: 1.2rem; padding: 20px;" ><i class="fa fa-database" aria-hidden="true"></i> Manage Dictionary</a>
+    </div>
     </div>
   </form>
-  <div style="position: absolute; bottom: 0; right: 0; margin: 20px; color: white;">
-    <i class="fa fa-database" aria-hidden="true"><a href="/user_controller" style="text-decoration: none; color : white;font-size: 1.2rem; padding: 20px;" >Manage Dictionary</a>
-    </div></i>
 </body>
 
 <script>
