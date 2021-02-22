@@ -10,10 +10,10 @@ app.use(bodyParser.urlencoded({extended:true}))
 const PORT = process.env.PORT || 4000
 
 const db = mysql.createConnection({
-    host : 'b65k2v5eq5hpygsbmyhm-mysql.services.clever-cloud.com',
-    user : 'u1hql9occut1cyai',
-    password : 'kqeSj0Rc7xBCDdo7L5FL',
-    database: 'b65k2v5eq5hpygsbmyhm'
+    host : 'localhost',
+    user : 'root',
+    password : '',
+    database: 'translate'
 })
 
 //connect
@@ -82,42 +82,116 @@ app.post('/convert', function(req,res) {
 })
 
 app.get('/user_controller',(req,res)=>{
-    res.render('user_controller')
+    res.render('user_controller', {message: "default"});
 })
 
 app.post('/add',function(req,res){
-    let addUrdu = req.body.addUrdu
-    let addHindi = req.body.addHindi
-    db.query('INSERT INTO urdutohindi (Urdu,Hindi) VALUES (?,?)',[addUrdu,addHindi],(err,result)=>{
-        if(err)
-        console.log(err)
+    let addUrdu,addHindi;
+    addUrdu = req.body.addUrdu;
+    console.log(addUrdu);
+    addHindi = req.body.addHindi;
+    var q = 'SELECT * FROM urdutohindi WHERE Urdu = ? OR Hindi = ? ' ;
+    db.query(q,[addUrdu,addHindi],(err,result) => {
+        console.log("RESULT",result);
+        let arr;
+        arr = Object.keys(result).length;
+        console.log(arr,arr.type);
+        let str = arr > 0 ? "greater than zero" : "zero";
+        console.log(str);
+        if(str == "zero")
+        {
+            console.log(addUrdu,addHindi);
+            db.query('INSERT INTO urdutohindi (Urdu,Hindi) VALUES (?,?)',[addUrdu,addHindi],(err,result)=>{
+                console.log(result);
+                if(err)
+                console.log("error");
+                else
+                {
+                    console.log("rendered");
+                    res.render('user_controller', {message: 'Data added'});
+                }
+            });
+        }
         else
-        res.render('user_controller')
+        {
+            res.render('user_controller',{message: 'This data is already added'});
+        }
     })
+    
 })
 
 app.post('/updateUrdu',function(req,res){
     let updateUrdu = req.body.updateUrdu
     let Hindi = req.body.Hindi
-    db.query('UPDATE urdutohindi SET Urdu = ? WHERE Hindi = ?',[updateUrdu,Hindi],(err,result)=>{
+    db.query('SELECT * FROM urdutohindi WHERE Hindi = ?',[Hindi],(err,result)=>{
         if(err)
         console.log(err)
         else
-        res.render('user_controller')
+        { 
+           if(Object.keys(result).length > 0)
+            {
+               db.query('SELECT * FROM urdutohindi WHERE Urdu = ?',[updateUrdu],(err,result1)=>{
+                   if(err)
+                   console.log(err)
+                   if(Object.keys(result1).length > 0)
+                   res.render('user_controller',{message: 'Urdu word already exist'})
+                   else{
+                    db.query('UPDATE urdutohindi SET Urdu = ? WHERE Hindi = ?',[updateUrdu,Hindi],(err,result2)=>{
+                        if(err)
+                        console.log(err)
+                        else
+                        res.render('user_controller',{message: 'Data updated'})
+                        })
+                   }
+                   
+               })
+               
+               
+            }
+            else
+            {
+                res.render('user_controller',{message: 'No valid match'})
+            }
+        }
     })
+   
 })
 
 app.post('/updateHindi',function(req,res){
     let Urdu = req.body.Urdu
     let updateHindi = req.body.updateHindi
-    db.query('UPDATE urdutohindi SET Urdu = ? WHERE Hindi = ?',[Urdu,updateHindi],(err,result)=>{
+
+    db.query('SELECT * FROM urdutohindi WHERE Urdu = ?',[Urdu],(err,result)=>{
         if(err)
         console.log(err)
         else
-        res.render('user_controller')
+        {
+           if(Object.keys(result).length > 0)
+            {
+                db.query('SELECT * FROM urdutohindi WHERE Hindi = ?',[updateHindi],(err,result1)=>{
+                    if(err)
+                    console.log(err)
+                    if(Object.keys(result1).length > 0)
+                    res.render('user_controller',{message: 'Hindi word already exist'})
+                    else{
+                        db.query('UPDATE urdutohindi SET Hindi = ? WHERE Urdu = ?',[updateHindi,Urdu],(err,result)=>{
+                            if(err)
+                            console.log(err)
+                            else
+                            res.render('user_controller',{message: 'Data updated'})
+                            })
+                    }
+                })
+              
+            }
+            else
+            {
+                res.render('user_controller',{message: 'No valid match'})
+            }
+        }
     })
+
 })
- 
 // setting server
 app.listen(PORT, () => {
     console.log(`listening to port ${PORT}`);
