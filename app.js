@@ -10,10 +10,10 @@ app.use(bodyParser.urlencoded({extended:true}))
 const PORT = process.env.PORT || 4000
 
 const db = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database: 'translate'
+    host : 'benpmbp84xkrym4yz3bz-mysql.services.clever-cloud.com',
+    user : 'u1hql9occut1cyai',
+    password : 'kqeSj0Rc7xBCDdo7L5FL',
+    database: 'benpmbp84xkrym4yz3bz'
 })
 
 //connect
