@@ -29,7 +29,7 @@
       font-weight:550;
       font-family: 'Times New Roman', serif;/*Georgia, serif;*/">
   
-      <form method="POST" action="/add" onsubmit="addHandler()" class="Adder needs-validation" required novalidate >
+      <form id="addWord" class="Adder needs-validation" required novalidate >
           <h2 style="margin-top: 15px; font-size: 1.4rem; color: hsl(185, 75%, 39%);
           margin-bottom: 15px;">Enter values to be added in the database</h2>
           <div class="form-row">
@@ -47,7 +47,7 @@
       <button type="submit" class="btn btn-primary mb-3">Add</button>
     </form>
   
-    <form method="POST" action="/updateUrdu" onsubmit="updateUrduHandler()" class="UpdaterUrdu needs-validation" novalidate>
+    <form id="updateUrdu" class="UpdaterUrdu needs-validation" novalidate>
       <h2 style="margin-top: 15px; font-size: 1.4rem; color: hsl(185, 75%, 39%);
       margin-bottom: 15px;">Enter The Urdu Word To Be Updated</h2>
       <div class="form-row">
@@ -63,7 +63,7 @@
   <button type="submit" class="btn btn-primary">update</button>
   </form>
   
-  <form method="POST" action="/updateHindi" onsubmit="updateHindiHandler()" class="UpdaterHindi needs-validation" novalidate> 
+  <form id="updateHindi" class="UpdaterHindi needs-validation" novalidate> 
       <h2 style="margin-top: 15px; font-size: 1.4rem; color: hsl(185, 75%, 39%);
       margin-bottom: 15px;">Enter The Hindi Word To Be Updated</h2>
       <div class="form-row">  
@@ -119,6 +119,92 @@
     
         form.classList.add('was-validated');
       }
+
+      
+      const token = localStorage.getItem('token')
+      const addWord = document.getElementById('addWord')
+      const updateHindi = document.getElementById('updateHindi')
+      const updateUrdu = document.getElementById('updateUrdu')
+
+      addWord.addEventListener('submit',(e)=>{
+
+                  e.preventDefault()
+                  var addUrdu = document.querySelector('input[name="addUrdu"]').value
+                  var addHindi = document.querySelector('input[name="addHindi"]').value
+                   console.log(token)
+                  const myHeader = new Headers()
+                  myHeader.append("Authorization", `Bearer ${token}`);
+
+                  const urlencoded = new URLSearchParams()
+                  urlencoded.append("addUrdu", addUrdu)
+                  urlencoded.append("addHindi", addHindi)
+
+                  var options = {
+                    method : 'POST',
+                    headers : myHeader,
+                    body : urlencoded,
+                    redirect : 'follow'
+                  }
+
+                  fetch('/user_controller/add', options)
+                  .then(response => response.text())
+                  .then(result => alert(JSON.parse(result).message))
+                  .catch(error => console.log('error', error))
+      })
+
+
+          updateUrdu.addEventListener('submit',(e)=>{
+
+                  e.preventDefault()
+                  var updateUrdu = document.querySelector('input[name="updateUrdu"]').value
+                  var Hindi = document.querySelector('input[name="Hindi"]').value
+                  console.log(token)
+                  const myHeader = new Headers()
+                  myHeader.append("Authorization", `Bearer ${token}`);
+
+                  const urlencoded = new URLSearchParams()
+                  urlencoded.append("updateUrdu", updateUrdu)
+                  urlencoded.append("Hindi", Hindi)
+
+                  var options = {
+                    method : 'POST',
+                    headers : myHeader,
+                    body : urlencoded,
+                    redirect : 'follow'
+                  }
+
+                  fetch('/user_controller/updateUrdu', options)
+                  .then(response => response.text())
+                  .then(result => alert(JSON.parse(result).message))
+                  .catch(error => console.log('error', error))
+            })
+      updateHindi.addEventListener('submit',(e)=>{
+
+                  e.preventDefault()
+                  var Urdu = document.querySelector('input[name="Urdu"]').value
+                  var updateHindi = document.querySelector('input[name="updateHindi"]').value
+                  console.log(token)
+                  const myHeader = new Headers()
+                  myHeader.append("Authorization", `Bearer ${token}`);
+
+                  const urlencoded = new URLSearchParams()
+                  urlencoded.append("Urdu", Urdu)
+                  urlencoded.append("updateHindi", updateHindi)
+
+                  var options = {
+                    method : 'POST',
+                    headers : myHeader,
+                    body : urlencoded,
+                    redirect : 'follow'
+                  }
+
+                  fetch('/user_controller/updateHindi', options)
+                  .then(response => response.text())
+                  .then(result => alert(JSON.parse(result).message))
+                  .catch(error => console.log('error', error)) 
+              })
+
+    
   </script>
   </body>
   </html>

@@ -5,7 +5,43 @@ body{
   height: 100%;
   margin: 0;
 }
-
+.flash {
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  padding-top: 1rem;
+  background:  hsl(185, 56%, 58%);
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  height: 0;
+  display:none;
+  border-radius: 10px;
+  transition: height .4s;
+}
+.flash--visible {
+  height: auto;
+  display: flex;
+  transition: height .2s;
+}
+.container {
+  margin-top: 80px;
+  text-align: center;
+}
+.btn {
+  width: 400px;
+  padding: 10px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn:active,.btn:focus {
+  outline: 0;
+}
+.btn:active {
+  background: #eee;  
+}
 .card-header{
   background-color: hsl(185, 56%, 58%);
   color: hsl(0, 0%, 100%);
